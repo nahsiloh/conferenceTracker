@@ -1,51 +1,43 @@
 class Session {
-  constructor(updatedTalksByDuration, sessionDuration) {
-    this.updatedTalksByDuration = updatedTalksByDuration;
-    this.remainingTime = sessionDuration;
-    this.assignedTalks = [];
-    this.talkDurations = Object.keys(this.updatedTalksByDuration)
+  constructor(talks) {
+    this.talks = talks;
+    this.talkDurations = this.getArrayOfTalkDurations(talks);
+    this.session = [];
+  }
+
+  getArrayOfTalkDurations() {
+    return Object.keys(this.talks)
       .map(Number)
       .sort((a, b) => b - a);
   }
 
-  getAvailableTalkWithDurationDivisibleBySession() {
+  getDuration(remainingTime) {
     return this.talkDurations.find(
       duration =>
-        this.remainingTime % duration === 0 &&
-        this.updatedTalksByDuration[duration].length > 0
+        remainingTime % duration === 0 && this.talks[duration].length > 0
     );
   }
 
-  getAvailableTalkWithLongestDuration() {
-    return this.talkDurations.find(
-      duration => this.updatedTalksByDuration[duration].length > 0
-    );
-  }
-
-  assignTalks() {
-    if (this.remainingTime === 0) {
-      return this.assignedTalks;
+  assignTalksToSession(sessionDuration) {
+    let remainingTime = sessionDuration;
+    if (sessionDuration === 0) {
+      return this.session;
     }
 
-    let durationOfTalkToBeAssigned = this.getAvailableTalkWithDurationDivisibleBySession();
-    if (durationOfTalkToBeAssigned === undefined) {
-      durationOfTalkToBeAssigned = this.getAvailableTalkWithLongestDuration();
+    const duration = this.getDuration(remainingTime);
+    if (!duration) {
+      throw new Error("No Available Talks To Be Assigned");
     }
 
-    if (durationOfTalkToBeAssigned === undefined) {
-      return this.assignedTalks;
+    this.session.push(this.talks[duration][0]);
+    this.talks[duration].shift();
+    remainingTime -= duration;
+
+    if (remainingTime > 0) {
+      return this.assignTalksToSession(remainingTime);
     }
 
-    this.assignedTalks.push(
-      this.updatedTalksByDuration[durationOfTalkToBeAssigned].shift()
-    );
-    this.remainingTime -= durationOfTalkToBeAssigned;
-
-    if (this.remainingTime > 0) {
-      this.assignTalks();
-    }
-
-    return this.assignedTalks;
+    return this.session;
   }
 }
 

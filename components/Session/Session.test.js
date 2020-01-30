@@ -1,57 +1,67 @@
 const Session = require("./Session");
-const { talksByDuration } = require("../../data/testData");
+const { talks } = require("../../data/testData");
 
-describe("Sessions", () => {
+const talksInValid = {
+  "240": [{ title: "Rails for Python Developers", duration: 240 }]
+};
+
+describe("Assign talks for one session", () => {
   beforeEach(() => {
-    return (updatedTalksByDuration = JSON.parse(
-      JSON.stringify(talksByDuration)
-    ));
+    const cloneDeep = data => {
+      return JSON.parse(JSON.stringify(data));
+    };
+    return (talksClone = cloneDeep(talks));
   });
 
-  describe("get array of talks within a session", () => {
-    it("it should return an empty array when the session is 0", () => {
-      const morningSession = new Session(updatedTalksByDuration, 0);
-      expect(morningSession.assignTalks()).toStrictEqual([]);
-    });
+  it("should return no talks if there are no available sessions", () => {
+    session = new Session(talksClone);
+    expect(session.assignTalksToSession(0)).toStrictEqual([]);
+  });
 
-    it("it should return an array of 1 60min talks when the session is 60", () => {
-      const morningSession = new Session(updatedTalksByDuration, 60);
-      expect(morningSession.assignTalks()).toStrictEqual([
-        {
-          title: "Writing Fast Tests Against Enterprise Rails 60min",
-          duration: 60
-        }
-      ]);
-    });
+  it("should throw error if unable to assign talk to session", () => {
+    session = new Session(talksInValid);
+    expect(() => {
+      session.assignTalksToSession(60);
+    }).toThrow("No Available Talks To Be Assigned");
+  });
 
-    it("it should return an array of 4 talks when the session is 180", () => {
-      const morningSession = new Session(updatedTalksByDuration, 180);
-      expect(morningSession.assignTalks()).toStrictEqual([
-        {
-          title: "Writing Fast Tests Against Enterprise Rails 60min",
-          duration: 60
-        },
-        { title: "Communicating Over Distance 60min", duration: 60 },
-        { title: "Lua for the Masses 30min", duration: 30 },
-        { title: "Woah 30min", duration: 30 }
-      ]);
-    });
+  it("should return 1 talk for a 60min session", () => {
+    session = new Session(talksClone);
+    expect(session.assignTalksToSession(60)).toStrictEqual([
+      {
+        title: "Writing Fast Tests Against Enterprise Rails 60min",
+        duration: 60
+      }
+    ]);
+  });
 
-    it("it should return an array of 5 talks when the session is 240", () => {
-      const afternoonSession = new Session(updatedTalksByDuration, 240);
-      expect(afternoonSession.assignTalks()).toStrictEqual([
-        {
-          title: "Writing Fast Tests Against Enterprise Rails 60min",
-          duration: 60
-        },
-        { title: "Communicating Over Distance 60min", duration: 60 },
-        { title: "Lua for the Masses 30min", duration: 30 },
-        { title: "Overdoing it in Python 45min", duration: 45 },
-        {
-          title: "Ruby Errors from Mismatched Gem Versions 45min",
-          duration: 45
-        }
-      ]);
+  it("should return 2 talks for a 120min session", () => {
+    session = new Session(talksClone);
+    expect(session.assignTalksToSession(120)).toStrictEqual([
+      {
+        title: "Writing Fast Tests Against Enterprise Rails 60min",
+        duration: 60
+      },
+      { title: "Communicating Over Distance 60min", duration: 60 }
+    ]);
+  });
+
+  it("should return 4 talks for a 180min session", () => {
+    session = new Session(talksClone);
+    expect(session.assignTalksToSession(180)).toStrictEqual([
+      {
+        title: "Writing Fast Tests Against Enterprise Rails 60min",
+        duration: 60
+      },
+      { title: "Communicating Over Distance 60min", duration: 60 },
+      { title: "Lua for the Masses 30min", duration: 30 },
+      { title: "Woah 30min", duration: 30 }
+    ]);
+  });
+
+  describe("Get talk durations", () => {
+    it("should return an array of talk durations", () => {
+      expect(session.getArrayOfTalkDurations()).toStrictEqual([60, 45, 30, 5]);
     });
   });
 });

@@ -1,4 +1,4 @@
-const talksByDuration = {
+const talks = {
   "5": [{ title: "Rails for Python Developers lightning", duration: 5 }],
   "30": [
     { title: "Lua for the Masses 30min", duration: 30 },
@@ -20,17 +20,84 @@ const talksByDuration = {
   ]
 };
 
-const scheduleForADay = [
-  "09:00AM Writing Fast Tests Against Enterprise Rails 60min",
-  "10:00AM Communicating Over Distance 60min",
-  "11:00AM Rails Magic 60min",
-  "12:00PM Lunch",
-  "01:00PM Ruby on Rails: Why We Should Move On 60min",
-  "02:00PM Ruby on Rails Legacy App Maintenance 60min",
-  "03:00PM Lua for the Masses 30min",
-  "03:30PM Overdoing it in Python 45min",
-  "04:15PM Ruby Errors from Mismatched Gem Versions 45min",
-  "05:00PM Networking Event"
+const talksData = {
+  "5": [{ title: "Rails for Python Developers lightning", duration: 5 }],
+  "30": [
+    { title: "Lua for the Masses 30min", duration: 30 },
+    { title: "Woah 30min", duration: 30 },
+    { title: "Sit Down and Write 30min", duration: 30 },
+    { title: "Programming in the Boondocks of Seattle 30min", duration: 30 },
+    { title: "Ruby vs. Clojure for Back-End Development 30min", duration: 30 },
+    { title: "A World Without HackerNews 30min", duration: 30 },
+    { title: "User Interface CSS in Rails Apps 30min", duration: 30 }
+  ],
+  "45": [
+    { title: "Overdoing it in Python 45min", duration: 45 },
+    { title: "Ruby Errors from Mismatched Gem Versions 45min", duration: 45 },
+    { title: "Common Ruby Errors 45min", duration: 45 },
+    { title: "Accounting-Driven Development 45min", duration: 45 },
+    { title: "Pair Programming vs Noise 45min", duration: 45 },
+    { title: "Clojure Ate Scala (on my project) 45min", duration: 45 }
+  ],
+  "60": [
+    {
+      title: "Writing Fast Tests Against Enterprise Rails 60min",
+      duration: 60
+    },
+    { title: "Communicating Over Distance 60min", duration: 60 },
+    { title: "Rails Magic 60min", duration: 60 },
+    { title: "Ruby on Rails: Why We Should Move On 60min", duration: 60 },
+    { title: "Ruby on Rails Legacy App Maintenance 60min", duration: 60 }
+  ]
+};
+
+const trackResult = [
+  {
+    title: "Writing Fast Tests Against Enterprise Rails 60min",
+    duration: 60
+  },
+  { title: "Communicating Over Distance 60min", duration: 60 },
+  { title: "Rails Magic 60min", duration: 60 },
+  { title: "Lunch", duration: 60 },
+  { title: "Ruby on Rails: Why We Should Move On 60min", duration: 60 },
+  { title: "Ruby on Rails Legacy App Maintenance 60min", duration: 60 },
+  { title: "Lua for the Masses 30min", duration: 30 },
+  { title: "Overdoing it in Python 45min", duration: 45 },
+  { title: "Ruby Errors from Mismatched Gem Versions 45min", duration: 45 },
+  { title: "Networking Event", duration: 60 }
+];
+
+const scheduleResult = [
+  {
+    startTime: "09:00AM",
+    title: "Writing Fast Tests Against Enterprise Rails 60min",
+    duration: 60
+  },
+  {
+    startTime: "10:00AM",
+    title: "Communicating Over Distance 60min",
+    duration: 60
+  },
+  { startTime: "11:00AM", title: "Rails Magic 60min", duration: 60 },
+  { startTime: "12:00PM", title: "Lunch", duration: 60 },
+  {
+    startTime: "01:00PM",
+    title: "Ruby on Rails: Why We Should Move On 60min",
+    duration: 60
+  },
+  {
+    startTime: "02:00PM",
+    title: "Ruby on Rails Legacy App Maintenance 60min",
+    duration: 60
+  },
+  { startTime: "03:00PM", title: "Lua for the Masses 30min", duration: 30 },
+  { startTime: "03:30PM", title: "Overdoing it in Python 45min", duration: 45 },
+  {
+    startTime: "04:15PM",
+    title: "Ruby Errors from Mismatched Gem Versions 45min",
+    duration: 45
+  },
+  { startTime: "05:00PM", title: "Networking Event", duration: 60 }
 ];
 
 const scheduleForConference = [
@@ -91,8 +158,10 @@ const printedSchedule =
   "04:05PM Networking Event\n";
 
 module.exports = {
-  talksByDuration,
-  scheduleForADay,
+  talks,
+  talksData,
+  trackResult,
+  scheduleResult,
   scheduleForConference,
   printedSchedule
 };
