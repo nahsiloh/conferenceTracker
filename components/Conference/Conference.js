@@ -1,14 +1,22 @@
 const ScheduleForADay = require("../ScheduleForADay/ScheduleForADay");
 const CONFERENCE_START_TIME = "09.00AM";
 
+const cloneDeep = data => {
+  return JSON.parse(JSON.stringify(data));
+};
+
 class Conference {
   constructor(talksByDuration) {
     this.talksByDuration = talksByDuration;
-    this.updatedTalksByDuration = JSON.parse(JSON.stringify(talksByDuration));
-    this.talkDurations = Object.keys(this.updatedTalksByDuration)
+    this.updatedTalksByDuration = cloneDeep(talksByDuration);
+    this.talkDurations = this.getTalkDurations(this.talksByDuration);
+    this.conferenceSchedule = [];
+  }
+
+  getTalkDurations(talks) {
+    return Object.keys(talks)
       .map(Number)
       .sort((a, b) => b - a);
-    this.conferenceSchedule = [];
   }
 
   getOneTrack() {
